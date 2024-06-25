@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -16,11 +17,26 @@ public class PlayerInteraction : MonoBehaviour
 
     //The npc interaction script
     NPCInteraction npcScript;
+    //pickup script for objects
+    Pickup pickup;
 
+    //Quest Manager
+    [SerializeField]GameObject questManagerObject;
+    QuestBase questScript;
+    
+    //Text for object pickup
+    [SerializeField]GameObject PickupTextObject;
+
+    TMP_Text pickupText;
+
+    void Start()
+    {
+        questScript = questManagerObject.GetComponent<QuestBase>();
+    }
 
     void Update()
     {
-        if(Input.GetAxis("Interact") > 0.1f && inRangeOfNPC)
+        if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.E) && inRangeOfNPC)
         {
             //check that there is a script referenced
             if (npcScript != null)
@@ -28,8 +44,24 @@ public class PlayerInteraction : MonoBehaviour
                 //run method on the other script
                 npcScript.NPCTalk();
             }
+
         }
 
+        if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.E) && inRangeOfItem)
+        {
+            //check that there is a script referenced
+            if (pickup != null)
+            {   
+                Debug.Log("Test1");
+                //run the item pickup method on quest and run it the item type
+                questScript.ItemPickup(pickup.itemType);
+                //turn of the text
+                PickupTextObject.SetActive(false);
+                //delete the picked up object
+                pickup.DestroyPickupObject();
+            }
+
+        }
     }
 
     //In range with a distance style of interacting with NPCs and Objects
@@ -42,6 +74,30 @@ public class PlayerInteraction : MonoBehaviour
 
             //try get a script from the other object
             npcScript = other.GetComponent<NPCInteraction>();
+            
+            //check if you can access the NPC Script
+            if (npcScript != null)
+            {
+                if(!npcScript.currentlyTalking)
+                {
+                    npcScript.DisplayDefaulttext();
+                }
+                //Turn on the text
+                npcScript.turnOnText(true);
+                
+            }
+        }
+        
+        //for finding objects you want to pickup
+        if(other.tag == "Pickup")
+        {
+            //Turn on the text 
+            PickupTextObject.SetActive(true);
+            //check if it has a pickup object
+            pickup = other.GetComponent<Pickup>();
+            //sets in range of item to true
+            inRangeOfItem = true;
+
         }
 
     }
@@ -50,44 +106,28 @@ public class PlayerInteraction : MonoBehaviour
     {
         if(other.tag == "NPC")
         {
-            Debug.Log("Out of Range");
             inRangeOfNPC = false;
-
+            //check if you can access the NPC Script
+            if (npcScript != null)
+            {
+                //Turn off the text
+                npcScript.turnOnText(false);
+            }
+            //Clear the NPC Script Reference
             npcScript = null;
         }
-        
-    }
-    
 
-
-    //Raycast style of interacting with objects and NPCS
-    void RayCastSettup()
-    {
-        if(Input.GetAxis("Interact") > 0.1f)
+        if(other.tag == "Pickup")
         {
-            //check that you haven't picked anything up
-            if(npcScript == null)
-            {
-                float pickupDistance = 20f;
-                //Send out a ray from the camera in a straight line - set max distance - apply the layer mask to stop hitting the player
-                if(Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit raycastHit, pickupDistance,pickupLayerMask ))
-                {
-                    //try find the script on the object that the raycast hits
-                    if(raycastHit.transform.TryGetComponent(out npcScript))
-                    {
-                        Debug.Log("Hit");
-                        //Run whatever code on the other script
+            PickupTextObject.SetActive(false);
+            //in range of item
+            inRangeOfItem = false;
+            
+            //Clear the Pickup Script Reference
+            pickup = null;
 
-                    }
-
-                }
-            }
-
-            else
-            {
-                npcScript = null;
-            }
-        
         }
+        
     }
+
 }

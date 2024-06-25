@@ -17,9 +17,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
     void Start()
     {
-        //Lock the mouse and make it invisible
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
     }
 
     void Update()
@@ -27,7 +25,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
         if(cameraStyle == 1)
         {
-            Debug.Log("1");
+
             //get the orientation gameobject to follow the current camera rotation
             Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
             orientation.forward = viewDir.normalized;
@@ -56,6 +54,7 @@ public class ThirdPersonCamera : MonoBehaviour
             orientation.forward = dirToLookAt.normalized;
 
             playerObject.forward = dirToLookAt.normalized;
+            //Debug.Log(playerObject.transform.localPosition);
 
         }
     }
