@@ -333,8 +333,8 @@ MonoBehaviour:
   diffusionProfiles:
     m_OverrideState: 1
     m_Value:
-    - {fileID: 11400000, guid: eb8f4424ce7f4084faac46cdf79a38be, type: 2}
-    - {fileID: 11400000, guid: 67ae3ae48a47962488d8583d88155b79, type: 2}
+    - {fileID: 11400000, guid: 404820c4cf36ad944862fa59c56064f0, type: 2}
+    - {fileID: 11400000, guid: 2384dbf2c1c420f45a792fbc315fbfb1, type: 2}
 --- !u!114 &5315503232242033309
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -583,6 +583,9 @@ MonoBehaviour:
   mode:
     m_OverrideState: 1
     m_Value: 2
+  useFullACES:
+    m_OverrideState: 0
+    m_Value: 0
   toeStrength:
     m_OverrideState: 0
     m_Value: 0
@@ -607,6 +610,33 @@ MonoBehaviour:
   lutContribution:
     m_OverrideState: 0
     m_Value: 1
+  neutralHDRRangeReductionMode:
+    m_OverrideState: 0
+    m_Value: 2
+  acesPreset:
+    m_OverrideState: 0
+    m_Value: 3
+  fallbackMode:
+    m_OverrideState: 0
+    m_Value: 1
+  hueShiftAmount:
+    m_OverrideState: 0
+    m_Value: 0
+  detectPaperWhite:
+    m_OverrideState: 0
+    m_Value: 0
+  paperWhite:
+    m_OverrideState: 0
+    m_Value: 300
+  detectBrightnessLimits:
+    m_OverrideState: 0
+    m_Value: 1
+  minNits:
+    m_OverrideState: 0
+    m_Value: 0.005
+  maxNits:
+    m_OverrideState: 0
+    m_Value: 1000
 --- !u!114 &7686318427622180703
 MonoBehaviour:
   m_ObjectHideFlags: 3
